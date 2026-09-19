@@ -9,8 +9,9 @@ import jakarta.ws.rs.core.MediaType;
 public class StudentResource {
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getStudents() {
-        return "Hello from Jersey!";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Student getStudent() {
+
+        return new Student(1, "Yash");
     }
 }
