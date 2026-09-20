@@ -1,5 +1,6 @@
 
 package org.example;
+import java.sql.Connection;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -22,8 +23,19 @@ public class Main {
                         config
                 );
 
+
         System.out.println("Jersey server started!");
         System.out.println("http://localhost:8080");
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+
+            System.out.println("Database connected!");
+
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             Thread.currentThread().join();

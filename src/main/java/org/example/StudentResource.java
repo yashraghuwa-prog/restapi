@@ -10,6 +10,7 @@ import jakarta.ws.rs.POST;
 import java.util.List;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.QueryParam;
 
 @Path("/students")
 public class StudentResource {
@@ -22,6 +23,16 @@ public class StudentResource {
         return repository.getStudents();
 
     }
+
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Student> searchStudents(
+            @QueryParam("name") String name) {
+
+        return repository.searchByName(name);
+    }
+
 
     @GET
     @Path("/{id}")
@@ -69,32 +80,31 @@ public class StudentResource {
             @PathParam("id") int id,
             Student student) {
 
-        Student existingStudent = repository.getStudent(id);
+        boolean updated = repository.updateStudent(id, student);
 
-        if (existingStudent == null) {
+        if (!updated) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        student.setId(id);
+
+        return Response.ok(student).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteStudent(@PathParam("id") int id) {
+
+        boolean deleted = repository.deleteStudent(id);
+
+        if (!deleted) {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .build();
         }
 
-        student.setId(id);
-
-        repository.updateStudent(student);
-
-        return Response
-                .ok(student)
-                .build();
-    }
-    @DELETE
-    @Path("/{id}")
-    public Response deleteStudent(@PathParam("id") int id){
-        boolean deleted=repository.deleteStudents(id);
-        if(!deleted){
-            return Response.
-                    status(Response.Status.NOT_FOUND).
-                    build();
-        }
         return Response.noContent().build();
     }
+
 
 }

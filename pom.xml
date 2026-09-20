@@ -27,6 +27,12 @@
             <version>${jersey.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.7</version>
+        </dependency>
+
         <!-- Jersey Dependency Injection -->
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
