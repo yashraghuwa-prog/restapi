@@ -9,6 +9,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import java.util.List;
 import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.DELETE;
 
 @Path("/students")
 public class StudentResource {
@@ -83,6 +84,17 @@ public class StudentResource {
         return Response
                 .ok(student)
                 .build();
+    }
+    @DELETE
+    @Path("/{id}")
+    public Response deleteStudent(@PathParam("id") int id){
+        boolean deleted=repository.deleteStudents(id);
+        if(!deleted){
+            return Response.
+                    status(Response.Status.NOT_FOUND).
+                    build();
+        }
+        return Response.noContent().build();
     }
 
 }
